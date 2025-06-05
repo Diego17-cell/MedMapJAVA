@@ -1,0 +1,43 @@
+-- Tabla de usuarios (esencial)
+CREATE TABLE `usuarios` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre_completo` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `celular` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username_UNIQUE` (`username`),
+  UNIQUE KEY `email_UNIQUE` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla de lugares turísticos (esencial)
+CREATE TABLE `lugares_turisticos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `ubicacion` varchar(100) NOT NULL,
+  `calificacion` decimal(3,1) DEFAULT 0.0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `nombre_UNIQUE` (`nombre`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Tabla de lugares visitados (usada)
+CREATE TABLE `lugares_visitados` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `lugar_id` int(11) NOT NULL,
+  `fecha_visita` date DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_usuario_visitado_idx` (`usuario_id`),
+  KEY `fk_lugar_visitado_idx` (`lugar_id`),
+  CONSTRAINT `fk_lugar_visitado` FOREIGN KEY (`lugar_id`) REFERENCES `lugares_turisticos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_usuario_visitado` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- Insertar datos de prueba (opcional)
+INSERT INTO `lugares_turisticos` (`nombre`, `ubicacion`, `calificacion`) VALUES
+('Parque Arví', 'Norte de Medellín', 0.0),
+('Pueblito Paisa', 'Cerro Nutibara', 0.0);
+
+INSERT INTO `usuarios` (`nombre_completo`, `username`, `password`, `email`, `celular`) VALUES
+('Juan Pérez', 'juanperez', 'password123', 'juan@example.com', '3101234567');
