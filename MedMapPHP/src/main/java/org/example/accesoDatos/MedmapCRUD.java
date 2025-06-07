@@ -191,4 +191,33 @@ public class MedmapCRUD {
 
         return lugares;
     }
+
+    public boolean actualizarDatosUsuario(String username, String nuevoNombre, String nuevoEmail, String nuevoCelular) throws SQLException {
+        String sql = "UPDATE usuarios SET nombre_completo = ?, email = ?, celular = ? WHERE username = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, nuevoNombre);
+            pstmt.setString(2, nuevoEmail);
+            pstmt.setString(3, nuevoCelular);
+            pstmt.setString(4, username);
+
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean eliminarUsuario(String username) throws SQLException {
+        String sql = "DELETE FROM usuarios WHERE username = ?";
+
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+
+
 }

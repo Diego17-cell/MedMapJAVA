@@ -32,7 +32,10 @@ public class Main {
             System.out.println("2. Iniciar sesión");
             System.out.println("3. Ver lugares turísticos");
             System.out.println("4. Agregar lugar turístico");
-            System.out.println("5. Salir");
+            System.out.println("5. Actualizar datos de usuario");
+            System.out.println("6. Eliminar usuario");
+            System.out.println("7. Salir");
+
             System.out.print("Seleccione una opción: ");
 
             opcion = scanner.nextInt();
@@ -52,12 +55,20 @@ public class Main {
                     agregarLugarTuristico();
                     break;
                 case 5:
+                    actualizarDatosUsuario();
+                    break;
+
+                case 6:
+                    eliminarUsuario();
+                    break;
+                case 7:
                     System.out.println("Saliendo del sistema...");
                     break;
+
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcion != 5);
+        } while (opcion != 7);
     }
 
     private static void registrarUsuario() throws SQLException {
@@ -220,4 +231,41 @@ public class Main {
             System.out.println("Error al calificar el lugar.");
         }
     }
+
+    private static void actualizarDatosUsuario() throws SQLException {
+        System.out.println("\n--- Actualizar datos de usuario ---");
+        System.out.print("Ingrese el username del usuario: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Ingrese el nuevo nombre completo: ");
+        String nuevoNombre = scanner.nextLine();
+
+        System.out.print("Ingrese el nuevo email: ");
+        String nuevoEmail = scanner.nextLine();
+
+        System.out.print("Ingrese el nuevo número de celular: ");
+        String nuevoCelular = scanner.nextLine();
+
+        boolean actualizado = crud.actualizarDatosUsuario(username, nuevoNombre, nuevoEmail, nuevoCelular);
+        if (actualizado) {
+            System.out.println("Datos actualizados correctamente.");
+        } else {
+            System.out.println("No se pudo actualizar el usuario. Verifique que el username exista.");
+        }
+    }
+
+    private static void eliminarUsuario() throws SQLException {
+        System.out.println("\n--- Eliminar usuario ---");
+        System.out.print("Ingrese el username del usuario que desea eliminar: ");
+        String username = scanner.nextLine();
+
+        boolean eliminado = crud.eliminarUsuario(username);
+        if (eliminado) {
+            System.out.println("Usuario eliminado correctamente.");
+        } else {
+            System.out.println("No se encontró el usuario con ese username.");
+        }
+    }
+
+
 }
